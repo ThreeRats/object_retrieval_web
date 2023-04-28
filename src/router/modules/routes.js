@@ -73,7 +73,7 @@ let routesProcess = (routes) => {
     routesArr.push({
         label: '404', path: '/404', breadcrumb: ['404页面']
     }, {
-        label: 'Welcome', path: '/welcome', breadcrumb: ['欢迎页面']
+        label: 'Welcome', path: '/welcome', breadcrumb: ['欢迎']
     })
 
     // 保存`系统所有路由`到Vuex中

@@ -14,7 +14,7 @@
         class="vel_menu_header_txt"
         :style="{height:fontHeight}"
     >
-      <span v-show="showLogoName">Vel-admin-web</span>
+      <span v-show="showLogoName">图像检索系统</span>
     </div>
   </section>
 </template>

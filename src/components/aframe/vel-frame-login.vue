@@ -55,8 +55,8 @@ const globalCfg = getCurrentInstance().appContext.config.globalProperties
 
 // 登录表单
 const loginForm = ref({
-  userName: 'Yanglinen',
-  passWord: '123456'
+  userName: 'heyixiao',
+  passWord: '114514'
 })
 
 const loading = ref(false)
