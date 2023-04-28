@@ -11,7 +11,7 @@
         >
           <ElementPlus/>
         </el-icon>
-        Vel-Admin-Web
+        图像检索系统
       </h3>
       <el-form-item>
         <el-input

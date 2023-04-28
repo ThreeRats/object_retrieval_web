@@ -39,19 +39,19 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu class="el_dropdown_menu_override">
-              <el-dropdown-item @click="userInfoClick">
-                <el-icon :size="18">
-                  <User/>
-                </el-icon>
-                个人中心
-              </el-dropdown-item>
-              <el-dropdown-item @click="userMessageClick">
-                <el-icon :size="18">
-                  <Bell/>
-                </el-icon>
-                我的消息
-                <el-badge value="new"/>
-              </el-dropdown-item>
+<!--              <el-dropdown-item @click="userInfoClick">-->
+<!--                <el-icon :size="18">-->
+<!--                  <User/>-->
+<!--                </el-icon>-->
+<!--                个人中心-->
+<!--              </el-dropdown-item>-->
+<!--              <el-dropdown-item @click="userMessageClick">-->
+<!--                <el-icon :size="18">-->
+<!--                  <Bell/>-->
+<!--                </el-icon>-->
+<!--                我的消息-->
+<!--                <el-badge value="new"/>-->
+<!--              </el-dropdown-item>-->
               <el-dropdown-item
                   @click="logout"
                   divided
@@ -114,14 +114,14 @@ const collapseClick = () => {
 }
 
 // 个人中心
-const userInfoClick = () => {
-  globalCfg.$router.push("/user/userInfo")
-}
-
-// 消息中心
-const userMessageClick = () => {
-  globalCfg.$router.push("/user/message")
-}
+// const userInfoClick = () => {
+//   globalCfg.$router.push("/user/userInfo")
+// }
+//
+// // 消息中心
+// const userMessageClick = () => {
+//   globalCfg.$router.push("/user/message")
+// }
 
 </script>
 

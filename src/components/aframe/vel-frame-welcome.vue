@@ -11,7 +11,7 @@
                         <p class="tips">
                            这是<a :href="githubUrl" target="_blank">我们团队</a>设计的图像检索平台。<br>
                             前端使用VUE框架，后端使用flask框架。<br>点击左侧的按钮来使用吧~<br>
-                            <a :href="qdUrl" target="_blank">前端仓库</a> <br>
+                            <a :href="qdUrl" target="_blank">前端仓库</a>（其实复用了之前的项目） <br>
                             <a :href="hdUrl" target="_blank">后端仓库</a>
                         </p>
                     </div>

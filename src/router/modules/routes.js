@@ -15,13 +15,14 @@ export const AddRouteEdState = {value: false}
  */
 export const dynaAddRoute = async () => {
     // 获取routes缓存信息
-    let routes = await localforage.getItem("routes")
-    if (routes == null) {
-        let res = await axios.get('/static/res/routes.json')
-        // 缓存routes信息，避免每次请求服务器
-        routes = await localforage.setItem('routes', res.data.data)
-    }
-
+    // let routes = await localforage.getItem("routes")
+    // if (routes == null) {
+    //     let res = await axios.get('/static/res/routes.json')
+    //     // 缓存routes信息，避免每次请求服务器
+    //     routes = await localforage.setItem('routes', res.data.data)
+    // }
+    let res = await axios.get('/static/res/routes.json')
+    let routes = await localforage.setItem('routes', res.data.data)
     // 动态路由程序处理
     routesProcess(routes)
 
@@ -75,7 +76,8 @@ let routesProcess = (routes) => {
     }, {
         label: 'Welcome', path: '/welcome', breadcrumb: ['欢迎']
     })
-
+    // console.log(111)
+    // console.log(routesArr)
     // 保存`系统所有路由`到Vuex中
     store.commit(Constant.ROUTES_ROUTES_ARR_SET_KEY, routesArr)
     // 保存`菜单部分路由`到Vuex中
@@ -129,12 +131,15 @@ let loopRoutes = (routesArr, routes, breadcrumb) => {
 let addRoute = (routesArr) => {
     // 导入所有vue视图模块
     const modules = import.meta.globEager("../../components/views/**/*.vue")
+
     for (let i = 0; i < routesArr.length; i++) {
         let route = routesArr[i]
         // 过滤掉内置的静态路由
         if (route.path === '/404' || route.path === '/welcome') {
             continue
         }
+
+        // console.log(route.component)
         // 添加子路由，子路由挂载在`gen`路由下
         router.addRoute('gen', {
             path: route.path, // 路由懒加载

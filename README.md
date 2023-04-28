@@ -1,6 +1,7 @@
 ## object-retrieval-web
 
-这是使用vue3搭建的图像检索系统的前端界面
+这是使用vue3搭建的图像检索系统的前端界面。<br>
+基于 https://github.com/mutolee/vel-admin-web 搭建。
 
 
 
