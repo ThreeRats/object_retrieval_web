@@ -22,7 +22,12 @@ for (let path in modulesFiles) {
  * Vuex文档地址：https://vuex.vuejs.org/zh/guide/composition-api.html
  */
 const store = createStore({
-    modules // 简写，相当于`modules:modules`
+    modules, // 简写，相当于`modules:modules`
+    state: {
+        has_retrieval: false,
+        now_img: '',
+        result_img_list:[],
+    },
 })
 
 

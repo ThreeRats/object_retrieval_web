@@ -1,22 +1,54 @@
 <template>
-  <div class="page">
-    <el-card shadow="never" class="vel_card_override">
-      <h3>{{ name }} 页面暂未开发...</h3>
-    </el-card>
-  </div>
+    <div class="page">
+        <el-card shadow="never" class="vel_card_override">
+            <div v-if="has_retrieval">
+                <h3 style="margin-left: 10px;">原图：</h3>
+                <el-image
+                        :src="now_img"
+                        fit="fill"
+                        :preview-src-list="srcList"
+                        style="width: 300px; height: 200px; margin-left: 10px; margin-top: 30px;"
+                ></el-image>
+                <h3 style="margin-left: 10px; margin-top: 30px;">相似的图片：</h3>
+                <div style="display:flex; ">
+                <div v-for="i in result_img_list.length" :key="i">
+                    <el-image
+                            :src="result_img_list[i-1]"
+                            fit="fill"
+                            :preview-src-list="result_img_list"
+                            style="width: 150px; height: 100px; margin-left: 10px; margin-top: 30px;margin-right: 30px;"
+                    >{{result_img_list[i]}}</el-image>
+                </div>
+                    </div>
+
+            </div>
+            <h3 v-else> 请先上传图片识别...</h3>
+        </el-card>
+    </div>
 </template>
 
-<script setup>
-const name = 'page-luyou'
+<script>
+export default {
+    data() {
+        return {
+            has_retrieval: this.$store.state.has_retrieval,
+            now_img: this.$store.state.now_img,
+            result_img_list: this.$store.state.result_img_list,
+            srcList: [this.$store.state.now_img],
+        };
+    },
+
+    methods: {}
+}
 </script>
 
 <style scoped>
 .page {
-  padding: 20px;
+    padding: 20px;
 }
 
 .vel_card_override {
-  height: calc(100vh - 90px - 20px - 20px - 2px);
+    height: calc(100vh - 90px - 20px - 20px - 2px);
 }
 
 </style>

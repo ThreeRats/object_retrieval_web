@@ -13,9 +13,11 @@
                     :before-remove="handleRemove"
             >
                 <el-button type="primary" style="margin-left: 10px;">选择图片</el-button>
+
             </el-upload>
             <div
                     v-if="imgUrl"
+                    style=" display: flex;flex-direction: column;"
             >
                 <el-image
                         :src="imgUrl"
@@ -23,9 +25,13 @@
                         :preview-src-list="srcList"
                         style="width: 600px; height: 400px; margin-left: 10px;"
                 ></el-image>
-                <el-button type="success" @click="submitUpload" style="margin-left: 200px;margin-top: 10px">
+                <el-button type="success" @click="submitUpload"
+                           style="margin-left: 260px;margin-top: 10px; width: 100px;">
                     开始检索
                 </el-button>
+                <el-progress :percentage="percentage" :color="customColorMethod"
+                             style="margin-top: 10px; width: 700px;"
+                />
             </div>
 
         </el-card>
@@ -33,7 +39,7 @@
 </template>
 
 <script>
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElLoading} from 'element-plus'
 import {reqSendImg} from "/src/api"
 
 export default {
@@ -42,10 +48,22 @@ export default {
             base64Image: "",
             imgUrl: '',
             srcList: [],
+            percentage: 0,
         };
     },
 
     methods: {
+        // 进度条更新颜色
+        customColorMethod() {
+
+            if (this.percentage < 30) {
+                return '#909399'
+            }
+            if (this.percentage < 70) {
+                return '#e6a23c'
+            }
+            return '#67c23a'
+        },
         // 再次上传图片
         handleExceed(file) {
             ElMessage({
@@ -57,6 +75,10 @@ export default {
             this.base64Image = '';
             this.imgUrl = '';
             this.srcList = [];
+            this.percentage = 0;
+            this.$store.state.has_retrieval = false;
+            this.$store.state.now_img = '';
+            this.$store.state.result_img_list = [];
             ElMessage({
                 message: '删除成功~',
                 type: 'success',
@@ -96,13 +118,44 @@ export default {
             });
         },
         // 上传图片
-        submitUpload() {
-
+        async submitUpload() {
             reqSendImg(this.base64Image).then((response) => {
                 let data = response.data;
                 console.log(response);
                 console.log(data)
+            }).catch(function (error) {
+                ElMessage({
+                    message: '上传失败，请检查网路！',
+                    type: 'error',
+                })
+            });
+
+
+            // sleep方法用于请求等待，减轻服务器负载
+            function sleep(time) {
+                return new Promise(resolve => setTimeout(resolve, time))
+            }
+
+
+            let success = false;
+            const loading = ElLoading.service({
+                lock: true,
+                text: 'Loading',
+                background: 'rgba(0, 0, 0, 0.7)',
             })
+            while (!success) {
+                await sleep(3000);
+                this.percentage += 50;
+                if (this.percentage == 100) {
+                    console.log(this.$store.state);
+                    this.$store.state.has_retrieval = true;
+                    this.$store.state.now_img = this.imgUrl;
+                    this.$store.state.result_img_list = [this.imgUrl, this.imgUrl, this.imgUrl, this.imgUrl, this.imgUrl]
+                    loading.close();
+                    break;
+                }
+            }
+
         },
     },
 };
@@ -111,8 +164,6 @@ export default {
 .page {
     padding: 20px;
 }
-
-
 
 
 .vel_card_override {
