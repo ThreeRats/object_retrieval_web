@@ -113,9 +113,7 @@ export default {
 }
 
 
-#upload_icon {
-    margin-left: 100px;
-}
+
 
 .vel_card_override {
     height: calc(100vh - 90px - 20px - 20px - 2px);
