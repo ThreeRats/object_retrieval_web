@@ -168,13 +168,17 @@ export default {
 
                 }
                 loading.close();
-
             }).catch(function (error) {
                 ElMessage({
                     message: '上传失败，请检查网路！',
                     type: 'error',
                 })
             });
+            // 前端测试使用
+            // this.$store.state.has_retrieval = true;
+            // this.$store.state.result_img_list = [this.imgUrl, this.imgUrl, this.imgUrl, this.imgUrl, this.imgUrl];
+            // this.$store.state.time = '114分514秒';
+            // this.$store.state.now_img = this.imgUrl;
 
         },
     },
