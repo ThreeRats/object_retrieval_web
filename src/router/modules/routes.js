@@ -4,6 +4,39 @@ import store from '../../vuex'
 import router from '../../router'
 import * as Constant from '../../config/constant'
 
+const res = {
+    "statusCode": 200,
+    "message": "数据加载成功",
+    "data": {
+        "menus": [
+            {
+                "id": "1",
+                "label": "上传图片",
+                "icon": "PictureFilled",
+                "path": "/update",
+                "component": "/page-update"
+            },
+            {
+                "id": "2",
+                "label": "查看结果",
+                "icon": "Tickets",
+                "path": "/result",
+                "component": "/page-result"
+            },
+        ],
+        "pages": [
+            // {
+            //     "id": "0-1",
+            //     "label": "个人中心",
+            //     "icon": "",
+            //     "path": "/user/userInfo",
+            //     "component": "/page-charts"
+            // },
+
+        ]
+    }
+}
+
 // 动态添加的路由的完成状态。<br>
 // 在路由守卫前置拦截中，会根据该状态判断要不要动态添加路由，<br>
 // 如果为true，就不需要再重复动态添加路由。<br>
@@ -21,8 +54,11 @@ export const dynaAddRoute = async () => {
     //     // 缓存routes信息，避免每次请求服务器
     //     routes = await localforage.setItem('routes', res.data.data)
     // }
-    let res = await axios.get('/static/res/routes.json')
-    let routes = await localforage.setItem('routes', res.data.data)
+    // console.log('没有访问路由？？？');
+    // let res = await axios.get('/static/res/routes.json')
+    // console.log('路由获得的res:',res)
+    let routes = await localforage.setItem('routes', res.data)
+    console.log(routes)
     // 动态路由程序处理
     routesProcess(routes)
 

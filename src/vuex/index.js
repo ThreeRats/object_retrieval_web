@@ -27,6 +27,7 @@ const store = createStore({
         has_retrieval: false,
         now_img: '',
         result_img_list:[],
+        time:'',
     },
 })
 

@@ -40,7 +40,7 @@
 
 <script>
 import {ElMessage, ElLoading} from 'element-plus'
-import {reqSendImg} from "/src/api"
+import {reqSendImg, reqGetProcess} from "/src/api"
 
 export default {
     data() {
@@ -78,6 +78,7 @@ export default {
             this.percentage = 0;
             this.$store.state.has_retrieval = false;
             this.$store.state.now_img = '';
+            this.$store.state.time = '';
             this.$store.state.result_img_list = [];
             ElMessage({
                 message: '删除成功~',
@@ -93,7 +94,6 @@ export default {
 
                 reader.onload = function () {
                     imgResult = reader.result;
-
                 };
                 reader.onerror = function (error) {
                     reject(error);
@@ -119,42 +119,62 @@ export default {
         },
         // 上传图片
         async submitUpload() {
-            reqSendImg(this.base64Image).then((response) => {
+            // sleep方法用于请求等待，减轻服务器负载
+            function sleep(time) {
+                return new Promise(resolve => setTimeout(resolve, time))
+            }
+
+            reqSendImg(this.base64Image).then(async (response) => {
                 let data = response.data;
                 console.log(response);
-                console.log(data)
+                const loading = ElLoading.service({
+                    lock: true,
+                    text: 'Loading',
+                    background: 'rgba(0, 0, 0, 0.7)',
+                })
+                // status为0时说明后端出现问题
+                if (data.status == 0) {
+                    ElMessage({
+                        message: '上传失败，服务器出现问题！',
+                        type: 'error',
+                    })
+                } else if (data.status == 1) {
+                    this.$store.state.has_retrieval = true;
+                    this.$store.state.result_img_list = data.result_img_list;
+                    this.$store.state.time = data.time;
+                    this.$store.state.now_img = this.imgUrl;
+                    this.percentage = 100;
+                    ElMessage({
+                        message: '识别成功，结果请查看查看结果页面~~~',
+                        type: 'success',
+                    })
+                } else {
+                    let process_data = {};
+                    while (this.percentage != 100) {
+                        await sleep(3000);
+                        reqGetProcess().then((response) => {
+                            process_data = response.data;
+                            this.percentage = process_data.percentage;
+                        })
+                    }
+                    this.$store.state.has_retrieval = true;
+                    this.$store.state.result_img_list = process_data.result_img_list;
+                    this.$store.state.time = process_data.time;
+                    this.$store.state.now_img = this.imgUrl;
+                    ElMessage({
+                        message: '识别成功，结果请查看查看结果页面~~~',
+                        type: 'success',
+                    })
+
+                }
+                loading.close();
+
             }).catch(function (error) {
                 ElMessage({
                     message: '上传失败，请检查网路！',
                     type: 'error',
                 })
             });
-
-
-            // sleep方法用于请求等待，减轻服务器负载
-            function sleep(time) {
-                return new Promise(resolve => setTimeout(resolve, time))
-            }
-
-
-            let success = false;
-            const loading = ElLoading.service({
-                lock: true,
-                text: 'Loading',
-                background: 'rgba(0, 0, 0, 0.7)',
-            })
-            while (!success) {
-                await sleep(3000);
-                this.percentage += 50;
-                if (this.percentage == 100) {
-                    console.log(this.$store.state);
-                    this.$store.state.has_retrieval = true;
-                    this.$store.state.now_img = this.imgUrl;
-                    this.$store.state.result_img_list = [this.imgUrl, this.imgUrl, this.imgUrl, this.imgUrl, this.imgUrl]
-                    loading.close();
-                    break;
-                }
-            }
 
         },
     },

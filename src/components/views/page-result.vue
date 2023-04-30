@@ -2,24 +2,28 @@
     <div class="page">
         <el-card shadow="never" class="vel_card_override">
             <div v-if="has_retrieval">
-                <h3 style="margin-left: 10px;">原图：</h3>
+                <!--                <h3 style="margin-left: 10px;">原图：</h3>-->
+                <el-button type="primary" style="margin-left: 10px;">原图：</el-button>
                 <el-image
                         :src="now_img"
                         fit="fill"
                         :preview-src-list="srcList"
                         style="width: 300px; height: 200px; margin-left: 10px; margin-top: 30px;"
                 ></el-image>
-                <h3 style="margin-left: 10px; margin-top: 30px;">相似的图片：</h3>
+                <!--                <h3 style="margin-left: 10px; margin-top: 30px;">相似的图片：</h3>-->
+                <el-button type="success" style="margin-left: 10px; margin-top: 30px;">相似的图片：</el-button>
                 <div style="display:flex; ">
-                <div v-for="i in result_img_list.length" :key="i">
-                    <el-image
-                            :src="result_img_list[i-1]"
-                            fit="fill"
-                            :preview-src-list="result_img_list"
-                            style="width: 150px; height: 100px; margin-left: 10px; margin-top: 30px;margin-right: 30px;"
-                    >{{result_img_list[i]}}</el-image>
-                </div>
+                    <div v-for="i in result_img_list.length" :key="i">
+                        <el-image
+                                :src="result_img_list[i-1]"
+                                fit="fill"
+                                :preview-src-list="result_img_list"
+                                style="width: 150px; height: 100px; margin-left: 10px; margin-top: 30px;margin-right: 30px;"
+                        >{{ result_img_list[i] }}
+                        </el-image>
                     </div>
+                </div>
+                <el-button type="info">共耗时：{{ time }}</el-button>
 
             </div>
             <h3 v-else> 请先上传图片识别...</h3>
@@ -35,6 +39,7 @@ export default {
             now_img: this.$store.state.now_img,
             result_img_list: this.$store.state.result_img_list,
             srcList: [this.$store.state.now_img],
+            time: this.$store.state.time,
         };
     },
 

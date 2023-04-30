@@ -8,6 +8,7 @@ const baseUrl = ()=>{
     return process.env.NODE_ENV === 'production' ? BASE_URL : BASE_URL_DEV
 }
 
+
 export default {
     baseUrl
 }
